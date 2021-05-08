@@ -1,0 +1,25 @@
+version: '3.9'
+
+networks:
+  - laravel:
+
+services:
+   nginx:
+     image: nginx:stable-alpine
+     
+     container_name: nginx
+     
+     ports:
+     - 7000
+     depends_on:
+       - php
+       - mysql
+   
+     networks:
+       - laravel
+   mysql:
+    networks:
+      - laravel 
+   php:
+    networks:
+      - laravel
