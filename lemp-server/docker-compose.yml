@@ -36,7 +36,7 @@ services:
     ports:
       - "9000:9000"
     volumes:
-       - ./public:/var/lib/www/html
+       - ./public:/var/www/html
     networks:
         - lemp-server
      
