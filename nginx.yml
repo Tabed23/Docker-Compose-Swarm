@@ -1,0 +1,14 @@
+version: "3"
+services:
+  web:
+    image: nginx
+    ports:
+      - "1156:8080"
+    
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+  
+  db:
+    image: redis

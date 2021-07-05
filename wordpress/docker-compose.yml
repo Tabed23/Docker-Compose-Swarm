@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+     # data base service
+    db:
+       image: mysql:5.7
+       container_name: mysql-wordpress
+       volumes:
+          - db_data:/var/lib/mysql
+       restart: unless-stopped
+       environment:
+            MYSQL_ROOT_PASSWORD: spass
+            MYSQL_DATABASE: wordpress
+            MYSQL_USER: wordpress
+            MYSQL_PASSWORD: wordp
+       networks:
+            - wordpress-site
+   # php myadmin
+    php:
+       depends_on:
+           - db
+       image: phpmyadmin/phpmyadmin
+       container_name: php-myadmin
+       restart: always
+       ports:
+        - "8080:80"
+       environment:
+             PMA_HOST: db
+             MYSQL_ROOT_PASSWORD: spass
+       networks:
+            - wordpress-site
+    # wordpress
+    wordpress:
+        depends_on:
+             - db
+        image: wordpress:latest
+        container_name: wordpress-site
+        ports:
+            - '8000:80'
+        restart: always
+        volumes:
+            - ./:/var/www/html
+        environment:
+            WORDPRESS_DB_HOST: db:3306
+            WORDPRESS_DB_USER: wordpress
+            WORDPRESS_DB_PASSWORD: wordp
+
+        networks:
+            - wordpress-site
+
+networks:
+    wordpress-site:
+volumes:
+    db_data:

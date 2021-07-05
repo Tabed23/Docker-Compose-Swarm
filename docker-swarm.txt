@@ -1,0 +1,71 @@
+# to install docker-Swarm on linux
+base=https://github.com/docker/machine/releases/download/v0.16.0 \
+  && curl -L $base/docker-machine-$(uname -s)-$(uname -m) >/tmp/docker-machine \
+  && sudo mv /tmp/docker-machine /usr/local/bin/docker-machine \
+  && chmod +x /usr/local/bin/docker-machine
+
+# to install throught bash script
+base=https://raw.githubusercontent.com/docker/machine/v0.16.0
+for i in docker-machine-prompt.bash docker-machine-wrapper.bash docker-machine.bash
+do
+  sudo wget "$base/contrib/completion/bash/${i}" -P /etc/bash_completion.d
+done
+
+
+# check the version 
+docker-machine -v
+
+#create a docker machine  -> manager
+
+# making a manager node
+docker swarm init --advertise-addr 'give the ip of the nod which you want to make managernode'
+# now to connect to a worker node the we will add the token given by the manager node
+# go to the worker node and add the token
+docker swarm join --token ' token of the docker swram manager'
+# to check we can run docker info
+
+# check the node in the swram 
+docker node ls
+
+# if you want to leave or remove a swram
+docker swarm leave --force # to leave the cluster
+# to remove the node
+docker node rm 'id of the node'
+
+# if you want to join again we can use the token command again
+
+# if you want to join a new worker node
+docker swarm join-token worker
+# and copy the token into new worker node
+
+# to create a service
+docker service create --name 'name of the service' --replicas 'give no of replicas' -p 'give port' 'image'
+# creating a nginx service 
+docker service create --name new-service --replicas 2 -p 20:20 nginx:latest
+# if you want to check the service 
+docker service ls
+
+# to remove our service
+docker rm <service id>
+# to inpect the service
+docker service inspect --pretty <service id>
+# to scale the service
+docker service scale 'service naem'= 'on up to replicas' 
+
+# if you want to create a network
+docker network create --driver overlay <name you want to give>
+# start the service with overlay network
+docker service create --replicas <no of replicas> --network <name of the network> --name <name of your container>  <image>
+
+# add a network to a existing service
+docker service update --network-add <name of the network> <service name>
+
+# to remove the network
+docker service update --network-rm <name of the network> <name of the service>
+
+
+# how to add volumes 
+docker service update --mount-add type-volume, source=<src name>, target=<dest-path> <servic name>
+docker service create --mount src=<volume name> , dist=<container-path> --name <service name> image
+
+
