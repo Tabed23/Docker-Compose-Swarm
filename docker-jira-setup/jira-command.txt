@@ -1,0 +1,8 @@
+docker volume create jiraVolume
+
+docker run -v jiraVolume:/var/atlassian/application-data/jira --name="jira" --cpus="1.5" --memory=2g -d -p 8080:8080 atlassian/jira-software:8
+
+
+or
+
+docker run -v jiraVolume:/var/atlassian/application-data/jira --name="jira" -d -p 8080:8080 atlassian/jira-software:8
