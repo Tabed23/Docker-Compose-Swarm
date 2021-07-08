@@ -12,6 +12,19 @@ services:
       - FLASK_ENV=development
     ports:
       - 5000:5000
+    networks:
+        - pynet 
 
   redis:
     image: redis:4.0.11-alpine
+    networks:
+        - pynet
+    volumes: 
+        - pydata:/data     
+
+
+networks:
+    pynet:     
+
+volumes: 
+    pydata:    
