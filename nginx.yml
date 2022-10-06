@@ -3,7 +3,7 @@ services:
   web:
     image: nginx
     ports:
-      - "1156:8080"
+      - "80:80"
     
     deploy:
       replicas: 2
