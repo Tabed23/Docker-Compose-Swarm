@@ -21,7 +21,7 @@ services:
       - ./mysql:/var/lib/mysql
     environment:
        MYSQL_DATABASE: deploye
-       MYSQL_USER:  laravel
+       MYSQL_USER:  root
        MYSQL_PASSWORD: sawwd493
        MYSQL_ROOT_PASSWORD: sawwd493
        SERVICE_TAGS: dev
@@ -34,7 +34,7 @@ services:
       dockerfile: Dockerfile
     container_name: php
     volumes:
-      - ./src:/var/lib/wwww/html
+    - './src:/var/www/html'
     ports:
      - "9090:9090"
     networks:
